@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAgenda.Infraestrutura.Arqu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAgenda.WebApp", "eAgenda.WebApp\eAgenda.WebApp.csproj", "{A3C9DD71-A214-4AC3-982E-91A5E623A24A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAgenda.Infraestrutura.Orm", "eAgenda.Infraestrutura.Orm\eAgenda.Infraestrutura.Orm.csproj", "{2283E0B3-543C-406C-A9CF-2BA09D0DED14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A3C9DD71-A214-4AC3-982E-91A5E623A24A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3C9DD71-A214-4AC3-982E-91A5E623A24A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3C9DD71-A214-4AC3-982E-91A5E623A24A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2283E0B3-543C-406C-A9CF-2BA09D0DED14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2283E0B3-543C-406C-A9CF-2BA09D0DED14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2283E0B3-543C-406C-A9CF-2BA09D0DED14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2283E0B3-543C-406C-A9CF-2BA09D0DED14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{85641E57-4356-4397-B093-03DAD541F078} = {FD0AF53F-07A9-4022-9F96-948EF1887AA1}
 		{83B19CC0-1237-47EB-B6E3-F2BDAA290A17} = {A4E1B881-FA5D-4C0B-8946-332C1AE6F5F6}
 		{A3C9DD71-A214-4AC3-982E-91A5E623A24A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2283E0B3-543C-406C-A9CF-2BA09D0DED14} = {A4E1B881-FA5D-4C0B-8946-332C1AE6F5F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E43884C-4A20-46B4-86CD-52D98065EC15}

@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>6ffe07f4-a79f-4856-955d-8c0c6945aba6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +13,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\eAgenda.Dominio\eAgenda.Dominio.csproj" />
     <ProjectReference Include="..\eAgenda.Infraestrutura.Arquivos\eAgenda.Infraestrutura.Arquivos.csproj" />
+    <ProjectReference Include="..\eAgenda.Infraestrutura.Orm\eAgenda.Infraestrutura.Orm.csproj" />
   </ItemGroup>
 
 </Project>
