@@ -1,4 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloContato;
+using eAgenda.Infraestrutura.Orm.ModuloCompromisso;
 using eAgenda.Infraestrutura.Orm.ModuloContato;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new MapeadorContatoEmOrm());
+        modelBuilder.ApplyConfiguration(new MapeadorCompromissoEmOrm());
 
         base.OnModelCreating(modelBuilder);
     }
