@@ -172,9 +172,9 @@ public class TarefaController : Controller
         if (tarefaSelecionada is null)
             return RedirectToAction(nameof(Index));
 
-        var itemAdicionado = tarefaSelecionada.AdicionarItem(tituloItem);
+        tarefaSelecionada.AdicionarItem(tituloItem);
 
-        repositorioTarefa.AdicionarItem(itemAdicionado);
+        repositorioTarefa.EditarRegistro(id, tarefaSelecionada);
 
         var gerenciarItensViewModel = new GerenciarItensViewModel(tarefaSelecionada);
 
@@ -199,7 +199,7 @@ public class TarefaController : Controller
         else
             tarefaSelecionada.MarcarItemPendente(itemSelecionado);
 
-        repositorioTarefa.AtualizarItem(itemSelecionado);
+        repositorioTarefa.EditarRegistro(idTarefa, tarefaSelecionada);
 
         var gerenciarItensViewModel = new GerenciarItensViewModel(tarefaSelecionada);
 
@@ -221,7 +221,7 @@ public class TarefaController : Controller
 
         tarefaSelecionada.RemoverItem(itemSelecionado);
 
-        repositorioTarefa.RemoverItem(itemSelecionado);
+        repositorioTarefa.EditarRegistro(idTarefa, tarefaSelecionada);
 
         var gerenciarItensViewModel = new GerenciarItensViewModel(tarefaSelecionada);
 
