@@ -7,12 +7,27 @@ namespace eAgenda.Testes.Integracao.ModuloContato;
 [TestClass]
 public sealed class RepositorioContatoEmOrmTestes
 {
-    private static readonly AppDbContext dbContext = AppDbContextFactory.CriarDbContext("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaBackendDb;Integrated Security=True");
-    private static RepositorioContatoEmOrm repositorioContato = new RepositorioContatoEmOrm(dbContext);
+    private static readonly AppDbContext dbContext = AppDbContextFactory.CriarDbContext("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaBackendTestDb;Integrated Security=True");
+    private static readonly RepositorioContatoEmOrm repositorioContato = new RepositorioContatoEmOrm(dbContext);
+
+    [TestInitialize]
+    public void ConfigurarTestes()
+    {
+        dbContext.Database.EnsureCreated();
+
+        dbContext.Tarefas.RemoveRange(dbContext.Tarefas);
+        dbContext.Despesas.RemoveRange(dbContext.Despesas);
+        dbContext.Categorias.RemoveRange(dbContext.Categorias);
+        dbContext.Compromissos.RemoveRange(dbContext.Compromissos);
+        dbContext.Contatos.RemoveRange(dbContext.Contatos);
+
+        dbContext.SaveChanges();
+    }
 
     [TestMethod]
     public void Deve_CadastrarRegistro_ComSucesso()
     {
+        // Arranjo
         Contato contato = new Contato(
             "Juninho Testes 2",
             "(49) 98533-3334",
@@ -21,6 +36,7 @@ public sealed class RepositorioContatoEmOrmTestes
             "Testador"
         );
 
+        // Ação
         repositorioContato.CadastrarRegistro(contato);
 
         Contato? contatoSelecionado = repositorioContato.SelecionarRegistroPorId(contato.Id);
@@ -32,6 +48,7 @@ public sealed class RepositorioContatoEmOrmTestes
     [TestMethod]
     public void Deve_RetornarNulo_Ao_SelecionarRegistroPorId_ComIdErrado()
     {
+        // Arranjo
         Contato contato = new Contato(
             "Juninho Testes 2",
             "(49) 98533-3334",
@@ -41,7 +58,8 @@ public sealed class RepositorioContatoEmOrmTestes
         );
 
         repositorioContato.CadastrarRegistro(contato);
-
+        
+        // Ação
         Contato? contatoSelecionado = repositorioContato.SelecionarRegistroPorId(Guid.NewGuid());
 
         // Asserção
@@ -51,7 +69,6 @@ public sealed class RepositorioContatoEmOrmTestes
     [TestMethod]
     public void Deve_EditarRegistro_ComSucesso()
     {
-        // Padrão AAA
         // Arranjo
         Contato contatoOriginal = new Contato(
             "Juninho Testes",
