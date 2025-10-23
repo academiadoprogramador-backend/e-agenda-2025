@@ -19,4 +19,8 @@
     <ProjectReference Include="..\eAgenda.Infraestrutura.Orm\eAgenda.Infraestrutura.Orm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ModuloTarefa\" />
+  </ItemGroup>
+
 </Project>

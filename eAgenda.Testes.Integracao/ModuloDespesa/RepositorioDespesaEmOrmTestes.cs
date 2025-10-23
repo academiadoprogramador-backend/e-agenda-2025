@@ -8,7 +8,7 @@ namespace eAgenda.Testes.Integracao.ModuloDespesa;
 
 [TestClass]
 [TestCategory("Testes de Integração de Despesa")]
-public class RepositorioDespesaEmOrm : TestFixture
+public class RepositorioDespesaEmOrmTestes : TestFixture
 {
     [TestMethod]
     public void Deve_CadastrarRegistro_ComSucesso()
