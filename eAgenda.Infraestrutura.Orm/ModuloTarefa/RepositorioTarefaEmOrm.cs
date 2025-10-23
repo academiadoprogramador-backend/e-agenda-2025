@@ -62,6 +62,7 @@ public class RepositorioTarefaEmOrm : IRepositorioTarefa
             .Include(x => x.Itens)
             .ToList();
     }
+    
     public List<Tarefa> SelecionarTarefasConcluidas()
     {
         return registros
