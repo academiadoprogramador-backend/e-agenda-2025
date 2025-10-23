@@ -12,7 +12,7 @@ namespace eAgenda.Testes.Integracao.Compartilhado;
 [TestClass]
 public abstract class TestFixture
 {
-    private AppDbContext? dbContext;
+    protected AppDbContext? dbContext;
 
     protected RepositorioContatoEmOrm? repositorioContato;
     protected RepositorioCompromissoEmOrm? repositorioCompromisso;
