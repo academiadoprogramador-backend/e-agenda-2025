@@ -13,23 +13,41 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav gap-2 ms-auto">
-                <li class="nav-item">
-                    <a class="@rotaContatosAtiva" href="/contatos">Contatos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="@rotaCompromissosAtiva" href="/compromissos">Compromissos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="@rotaCategoriasAtiva" href="/categorias">Categorias</a>
-                </li>
-                <li class="nav-item">
-                    <a class="@rotaDespesasAtiva" href="/despesas">Despesas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="@rotaTarefasAtiva" href="/tarefas">Tarefas</a>
-                </li>
-            </ul>
+
+            @if (User.Identity is not null && User.Identity.IsAuthenticated)
+            {
+                <ul class="navbar-nav gap-2 ms-auto">
+                    <li class="nav-item">
+                        <a class="@rotaContatosAtiva" href="/contatos">Contatos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="@rotaCompromissosAtiva" href="/compromissos">Compromissos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="@rotaCategoriasAtiva" href="/categorias">Categorias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="@rotaDespesasAtiva" href="/despesas">Despesas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="@rotaTarefasAtiva" href="/tarefas">Tarefas</a>
+                    </li>
+                </ul>
+
+                <div class="dropdown ms-5">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i>
+                        @User.Identity?.Name
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <form asp-controller="Autenticacao" asp-action="Logout" method="post">
+                                <button class="dropdown-item" type="submit">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            }
         </div>
     </div>
 </nav>
