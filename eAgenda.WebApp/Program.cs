@@ -12,6 +12,9 @@ public class Program
         // Add services to the container.
         builder.Services.AddCamadaInfraestruturaEmOrm(builder.Configuration);
 
+        builder.Services.AddIdentityProviderConfig();
+        builder.Services.AddCookieAuthenticationConfig();
+
         builder.Services.AddControllersWithViews();
 
         var app = builder.Build();
@@ -30,6 +33,7 @@ public class Program
 
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllerRoute(

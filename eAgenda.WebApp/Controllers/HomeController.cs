@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eAgenda.WebApp.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     [HttpGet]

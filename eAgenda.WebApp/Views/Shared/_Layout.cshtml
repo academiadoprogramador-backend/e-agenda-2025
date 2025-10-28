@@ -13,11 +13,15 @@
     <title>@ViewBag.Titulo | e-Agenda</title>
 </head>
 <body>
-    <partial name="_NavbarPartial" />
+    @if (User.Identity is not null && User.Identity.IsAuthenticated)
+    {
+        <partial name="_NavbarPartial" />
 
-    <header class="container my-4">
-        <h2 class="text-primary">@ViewBag.Titulo</h2>
-    </header>
+        <header class="container my-4">
+            <h2 class="text-primary">@ViewBag.Titulo</h2>
+        </header>
+    }
+
     <main class="container my-4">
         @RenderBody()
     </main>
