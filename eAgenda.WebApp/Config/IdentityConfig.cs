@@ -9,6 +9,8 @@ public static class IdentityConfig
 {
     public static void AddIdentityProviderConfig(this IServiceCollection services)
     {
+        services.AddScoped<ITenantProvider, IdentityTenantProvider>();
+
         services.AddIdentity<Usuario, Cargo>(options =>
         {
             options.User.RequireUniqueEmail = true;

@@ -1,4 +1,6 @@
-﻿using eAgenda.Dominio.ModuloCategoria;
+﻿using eAgenda.Dominio.ModuloAutenticacao;
+using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,14 +15,17 @@ public class DespesaController : Controller
 {
     private readonly IRepositorioDespesa repositorioDespesa;
     private readonly IRepositorioCategoria repositorioCategoria;
+    private readonly ITenantProvider tenantProvider;
 
     public DespesaController(
         IRepositorioDespesa repositorioDespesa, 
-        IRepositorioCategoria repositorioCategoria
+        IRepositorioCategoria repositorioCategoria,
+        ITenantProvider tenantProvider
     )
     {
         this.repositorioDespesa = repositorioDespesa;
         this.repositorioCategoria = repositorioCategoria;
+        this.tenantProvider = tenantProvider;
     }
 
     [HttpGet]
@@ -67,6 +72,8 @@ public class DespesaController : Controller
             cadastrarVM.DataOcorrencia,
             cadastrarVM.FormaPagamento
         );
+
+        despesa.UsuarioId = tenantProvider.UsuarioId.GetValueOrDefault();
 
         var categoriasSelecionadas = cadastrarVM.CategoriasSelecionadas;
 
