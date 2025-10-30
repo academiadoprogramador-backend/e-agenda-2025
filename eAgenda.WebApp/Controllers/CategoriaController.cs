@@ -2,6 +2,7 @@
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace eAgenda.WebApp.Controllers;
 
@@ -50,6 +51,11 @@ public class CategoriaController : Controller
         }
 
         var entidade = new Categoria(cadastrarVM.Titulo);
+
+        // Tenta obter o ID do usuário requisitante
+        var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+
+        entidade.UsuarioId = Guid.Parse(claim!.Value);
 
         repositorioCategoria.CadastrarRegistro(entidade);
 
