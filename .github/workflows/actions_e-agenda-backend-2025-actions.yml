@@ -37,7 +37,7 @@ jobs:
 
   migrate:
     runs-on: windows-latest
-    needs: [build, test]
+    needs: build
     permissions:
       contents: read
 
