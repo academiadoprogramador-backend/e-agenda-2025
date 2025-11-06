@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - e-agenda-backend-2025-actions
+name: Test Action
 
 on:
   push:
@@ -10,10 +10,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: windows-latest
+  test:
+    runs-on: ubuntu-latest
+    needs: build
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -22,67 +23,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
-
-  migrate:
-    runs-on: windows-latest
-    needs: build
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.x'
-
-      - name: Install EF Core CLI
-        run: dotnet tool install --global dotnet-ef
-
-      - name: Apply EF Core migrations
-        run: dotnet ef database update --project ./eAgenda.Infraestrutura.Orm --startup-project ./eAgenda.WebApp
+    
+      - name: Run tests
+        run: dotnet test --configuration Release --verbosity normal
         env:
-          SQL_CONNECTION_STRING: ${{ secrets.SQL_CONNECTION_STRING }}
-
-  deploy:
-    runs-on: windows-latest
-    needs: [build, migrate]
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A94A934F714246DB9498D74267E197F0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8387EB545A8548679A8C94333C2D318E }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_53BE8FCFAB4E48F2950ACFEE6BA739E7 }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'e-agenda-backend-2025-actions'
-          slot-name: 'Production'
-          package: .
-          
+          ASPNET_ENVIRONMENT: "STAGING"
