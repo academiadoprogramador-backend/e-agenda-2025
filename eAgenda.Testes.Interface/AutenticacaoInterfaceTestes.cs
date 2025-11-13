@@ -1,69 +1,79 @@
-﻿using OpenQA.Selenium;
+﻿using eAgenda.Testes.Interface.Compartilhado;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 namespace eAgenda.Testes.Interface;
 
 [TestClass]
 [TestCategory("Testes de Interface de Autenticação")]
-public sealed class AutenticacaoInterfaceTestes
+public sealed class AutenticacaoInterfaceTestes : TestFixture
 {
-    private static WebDriver? webDriver;
-    private string enderecoBase = "https://localhost:9001";
-
-    [AssemblyCleanup]
-    public static void LimparAmbiente()
-    {
-        if (webDriver is null) return;
-
-        webDriver.Quit();
-        webDriver.Dispose();
-    }
-
     [TestMethod]
     public void Deve_Registrar_Usuario_Corretamente()
     {
-        webDriver = new ChromeDriver();
+        // Arranjo
+        webDriver?.Navigate().GoToUrl(Path.Combine(enderecoBase, "autenticacao", "registro"));
 
-        webDriver.Navigate().GoToUrl(Path.Combine(enderecoBase, "autenticacao", "registro"));
+        // Ação
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputEmail]"))).SendKeys("teste@gmail.com");
 
-        webDriver
-            .FindElement(By.CssSelector("input[data-se=inputEmail]"))
-            .SendKeys("teste@gmail.com");
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputSenha]"))).SendKeys("Teste@123");
 
-        webDriver
-            .FindElement(By.CssSelector("input[data-se=inputSenha]"))
-            .SendKeys("Teste@123");
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputConfirmarSenha]"))).SendKeys("Teste@123");
 
-        webDriver
-            .FindElement(By.CssSelector("input[data-se=inputConfirmarSenha]"))
-            .SendKeys("Teste@123");
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("button[data-se=btnConfirmar]"))).Click();
 
-        webDriver
-            .FindElement(By.CssSelector("button[data-se=btnConfirmar]"))
-            .Click();
+        // Asserção
+        webDriverWait?
+           .Until(d => d.Title.Contains("Página Inicial"));
 
-        Assert.IsTrue(webDriver.PageSource.Contains("Página Inicial"));
+        Assert.IsTrue(webDriver?.Title.Contains("Página Inicial"));
     }
 
     [TestMethod]
     public void Deve_Autenticar_Usuario_Corretamente()
     {
-        webDriver = new ChromeDriver();
+        // Arranjo
+        webDriver?.Navigate().GoToUrl(Path.Combine(enderecoBase, "autenticacao", "registro"));
 
-        webDriver.Navigate().GoToUrl(Path.Combine(enderecoBase, "autenticacao", "login"));
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputEmail]"))).SendKeys("teste@gmail.com");
 
-        webDriver
-           .FindElement(By.CssSelector("input[data-se=inputEmail]"))
-           .SendKeys("teste@gmail.com");
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputSenha]"))).SendKeys("Teste@123");
 
-        webDriver
-            .FindElement(By.CssSelector("input[data-se=inputSenha]"))
-            .SendKeys("Teste@123");
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputConfirmarSenha]"))).SendKeys("Teste@123");
 
-        webDriver
-            .FindElement(By.CssSelector("button[data-se=btnConfirmar]"))
-            .Click();
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("button[data-se=btnConfirmar]"))).Click();
 
-        Assert.IsTrue(webDriver.PageSource.Contains("teste@gmail.com"));
+        webDriverWait?
+           .Until(d => d.Title.Contains("Página Inicial"));
+
+        webDriver?.Navigate().GoToUrl(Path.Combine(enderecoBase, "autenticacao", "login"));
+
+        // Ação
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputEmail]"))).SendKeys("teste@gmail.com");
+
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputSenha]"))).SendKeys("Teste@123");
+
+        webDriverWait?
+            .Until(d => d.FindElement(By.CssSelector("button[data-se=btnConfirmar]"))).Click();
+
+        webDriverWait?
+           .Until(d => d.Title.Contains("Página Inicial"));
+
+        webDriverWait?
+            .Until(d => d.PageSource.Contains("teste@gmail.com"));
+
+        // Asserção
+        Assert.IsTrue(webDriver?.PageSource.Contains("teste@gmail.com"));
     }
 }
