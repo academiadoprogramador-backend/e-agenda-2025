@@ -69,10 +69,10 @@ public abstract class TestFixture
             .Until(d => d.FindElement(By.CssSelector("input[data-se=inputEmail]"))).SendKeys("teste@gmail.com");
 
         webDriverWait?
-            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputSenha]"))).SendKeys("Teste@123");
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputSenha]"))).SendKeys("SenhaSuperForteTeste@536");
 
         webDriverWait?
-            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputConfirmarSenha]"))).SendKeys("Teste@123");
+            .Until(d => d.FindElement(By.CssSelector("input[data-se=inputConfirmarSenha]"))).SendKeys("SenhaSuperForteTeste@536");
 
         webDriverWait?
             .Until(d => d.FindElement(By.CssSelector("button[data-se=btnConfirmar]"))).Click();

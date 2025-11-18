@@ -47,6 +47,13 @@ public class AutenticacaoController(UserManager<Usuario> userManager, SignInMana
             return View(registroVm);
         }
 
+        Microsoft.AspNetCore.Identity.SignInResult resultadoLogin = await signInManager.PasswordSignInAsync(
+            registroVm.Email,
+            registroVm.ConfirmarSenha,
+            isPersistent: true,
+            lockoutOnFailure: false
+        );
+
         return RedirectToAction(nameof(HomeController.Index), "Home");
     }
 
