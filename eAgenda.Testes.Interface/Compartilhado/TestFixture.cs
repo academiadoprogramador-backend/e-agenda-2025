@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using System.Globalization;
 
 namespace eAgenda.Testes.Interface.Compartilhado;
 
@@ -19,6 +20,10 @@ public abstract class TestFixture
     [AssemblyInitialize]
     public static void ConfigurarTestFixture(TestContext testContext)
     {
+        var cultura = new CultureInfo("pt-BR");
+        CultureInfo.DefaultThreadCurrentCulture = cultura;
+        CultureInfo.DefaultThreadCurrentUICulture = cultura;
+
         serverFactory = new SeleniumServerFactory();
         dbContext = serverFactory.Servicos.GetRequiredService<AppDbContext>();
         enderecoBase = serverFactory.UrlKestrel;
