@@ -101,7 +101,7 @@ public class CompromissoInterfaceTestes : TestFixture
             .SendKeys("Reunião de Trabalho");
 
         EsperarPorElemento(By.CssSelector("input[data-se=inputData]"))
-            .SendKeys("22/12/2025");
+            .SendKeys("2025-12-22");
 
         EsperarPorElemento(By.CssSelector("input[data-se=inputHoraInicio]"))
             .SendKeys("09:00");

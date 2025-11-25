@@ -20,10 +20,6 @@ public abstract class TestFixture
     [AssemblyInitialize]
     public static void ConfigurarTestFixture(TestContext testContext)
     {
-        var cultura = new CultureInfo("pt-BR");
-        CultureInfo.DefaultThreadCurrentCulture = cultura;
-        CultureInfo.DefaultThreadCurrentUICulture = cultura;
-
         serverFactory = new SeleniumServerFactory();
         dbContext = serverFactory.Servicos.GetRequiredService<AppDbContext>();
         enderecoBase = serverFactory.UrlKestrel;
