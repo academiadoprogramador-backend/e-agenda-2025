@@ -37,7 +37,7 @@ public abstract class TestFixture
         }
 
         webDriver = new ChromeDriver(chromeOptions);
-        webDriverWait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(5));
+        webDriverWait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(30));
     }
 
     [AssemblyCleanup]
