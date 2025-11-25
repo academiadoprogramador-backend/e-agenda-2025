@@ -31,6 +31,9 @@ public class CompromissoInterfaceTestes : TestFixture
 
         ContatoInterfaceTestes.CadastrarContatoPadrao();
 
+        webDriverWait!.Until(d => d.Title.Contains("Visualização de Contatos"));
+        webDriverWait!.Until(d => d.PageSource.Contains("Oscar Lima"));
+
         NavegarPara("/compromissos/cadastrar");
 
         PreencherCamposBasicosDeCompromisso();
@@ -100,17 +103,14 @@ public class CompromissoInterfaceTestes : TestFixture
         EsperarPorElemento(By.CssSelector("input[data-se=inputAssunto]"))
             .SendKeys("Reunião de Trabalho");
 
-        var inputData = EsperarPorElemento(By.CssSelector("input[data-se=inputData]"));
-        inputData.Clear();
-        inputData.SendKeys("2025-12-22");
+        EsperarPorElemento(By.CssSelector("input[data-se=inputData]"))
+            .SendKeys("22/12/2025");
 
-        var inputHoraInicio = EsperarPorElemento(By.CssSelector("input[data-se=inputHoraInicio]"));
-        inputHoraInicio.Clear();
-        inputHoraInicio.SendKeys("09:00");
+        EsperarPorElemento(By.CssSelector("input[data-se=inputHoraInicio]"))
+            .SendKeys("09:00");
 
-        var inputHoraTermino = EsperarPorElemento(By.CssSelector("input[data-se=inputHoraTermino]"));
-        inputHoraInicio.Clear();
-        inputHoraTermino.SendKeys("10:00");
+        EsperarPorElemento(By.CssSelector("input[data-se=inputHoraTermino]"))
+            .SendKeys("10:00");
 
         var selectTipo = new SelectElement(
             EsperarPorElemento(By.CssSelector("select[data-se=inputTipo]"))
