@@ -136,13 +136,17 @@ public abstract class TestFixture
                 return element.Displayed ? element : null!;
             });
         }
-        catch
+        catch (WebDriverTimeoutException)
         {
-            Console.WriteLine("==== Selenium timeout ====");
-            Console.WriteLine("Current URL: " + webDriver?.Url);
-            Console.WriteLine("Page source:");
-            Console.WriteLine(webDriver?.PageSource);
-            Console.WriteLine("==== end page source ====");
+            Console.WriteLine($"[DEBUG] Timeout esperando pelo elemento: {localizador}");
+            Console.WriteLine($"[DEBUG] URL atual: {webDriver?.Url}");
+            Console.WriteLine("[DEBUG] Título da página: " + webDriver?.Title);
+
+            // Opcional: mostra um pedaço do HTML
+            var pageSource = webDriver?.PageSource ?? string.Empty;
+            Console.WriteLine("[DEBUG] Page source:");
+            Console.WriteLine(pageSource);
+
             throw;
         }
     }
