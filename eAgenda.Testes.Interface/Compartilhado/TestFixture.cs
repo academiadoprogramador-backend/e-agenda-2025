@@ -11,7 +11,7 @@ public abstract class TestFixture
     protected static WebDriver? webDriver;
     protected static WebDriverWait? webDriverWait;
     protected static AppDbContext? dbContext;
-    protected string enderecoBase = "https://localhost:9001";
+    protected static string enderecoBase = "https://localhost:9001";
 
     [AssemblyInitialize]
     public static void ConfigurarTestFixture(TestContext testContext)
@@ -84,5 +84,24 @@ public abstract class TestFixture
 
         webDriverWait?
             .Until(d => d.PageSource.Contains("teste@gmail.com"));
+    }
+
+    protected static void NavegarPara(string caminhoRelativo)
+    {
+        var enderecoBaseUri = new Uri(enderecoBase);
+
+        var uri = new Uri(enderecoBaseUri, caminhoRelativo);
+
+        webDriver?.Navigate().GoToUrl(uri);
+    }
+
+    protected static IWebElement EsperarPorElemento(By localizador)
+    {
+        return webDriverWait!.Until(driver =>
+        {
+            var elemento = driver.FindElement(localizador);
+
+            return elemento.Displayed ? elemento : null;
+        });
     }
 }
