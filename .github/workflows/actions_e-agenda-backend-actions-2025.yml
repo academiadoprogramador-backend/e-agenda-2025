@@ -49,11 +49,6 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Verify Chrome installation
-        run: |
-          chrome --version
-          chromedriver --version
-
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
@@ -94,4 +89,5 @@ jobs:
           package: .
 
           
+
 
