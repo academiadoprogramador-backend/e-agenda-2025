@@ -1,4 +1,5 @@
 ﻿using eAgenda.Infraestrutura.Orm;
+using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -8,15 +9,20 @@ namespace eAgenda.Testes.Interface.Compartilhado;
 [TestClass]
 public abstract class TestFixture
 {
+    protected static SeleniumWebApplicationFactory serverFactory;
     protected static WebDriver? webDriver;
     protected static WebDriverWait? webDriverWait;
     protected static AppDbContext? dbContext;
-    protected static string enderecoBase = "https://localhost:9001";
+    protected static string enderecoBase = null!;
 
     [AssemblyInitialize]
     public static void ConfigurarTestFixture(TestContext testContext)
     {
-        dbContext = AppDbContextFactory.CriarDbContext("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaBackendTestDb;Integrated Security=True");
+        serverFactory = new SeleniumWebApplicationFactory();
+
+        dbContext = serverFactory.Servicos.GetRequiredService<AppDbContext>();
+
+        enderecoBase = serverFactory.UrlKestrel;
 
         webDriver = new ChromeDriver();
     }
@@ -24,12 +30,25 @@ public abstract class TestFixture
     [AssemblyCleanup]
     public static void LimparAmbiente()
     {
-        if (webDriver is null || dbContext is null) return;
+        if (webDriver is not null)
+        {
+            webDriver.Quit();
+            webDriver.Dispose();
+            webDriver = null;
+        }
 
-        webDriver.Quit();
-        webDriver.Dispose();
+        if (dbContext is not null)
+        {
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+            dbContext = null;
+        }
 
-        dbContext.Database.EnsureDeleted();
+        if (serverFactory is not null)
+        {
+            serverFactory?.Dispose();
+            serverFactory = null;
+        }
     }
 
     [TestInitialize]
