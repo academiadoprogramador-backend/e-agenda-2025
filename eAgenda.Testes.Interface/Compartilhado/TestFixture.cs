@@ -16,6 +16,7 @@ public abstract class TestFixture
     protected static WebDriverWait? webDriverWait;
 
     protected static string enderecoBase = null!;
+    public TestContext TestContext { get; set; } = null!;
 
     [AssemblyInitialize]
     public static void ConfigurarTestFixture(TestContext testContext)
@@ -90,6 +91,52 @@ public abstract class TestFixture
 
         if (webDriver is not null)
             webDriver.Manage().Cookies.DeleteAllCookies();
+    }
+
+    [TestCleanup]
+    public void RegistrarFalhaGlobal()
+    {
+        if (TestContext.CurrentTestOutcome != UnitTestOutcome.Failed)
+            return;
+
+        if (webDriver is null)
+            return;
+
+        try
+        {
+            Console.WriteLine("========== DEBUG ==========");
+            Console.WriteLine($"Teste: {TestContext.TestName}");
+            Console.WriteLine($"Resultado: {TestContext.CurrentTestOutcome}");
+            Console.WriteLine($"URL da página atual: {webDriver.Url}");
+            Console.WriteLine($"Título da página atual: {webDriver.Title}");
+
+            var pageSource = webDriver.PageSource ?? string.Empty;
+            var max = 4000;
+
+            Console.WriteLine("----- PageSource (primeiros 4000 chars) -----");
+            Console.WriteLine(pageSource.Length > max
+                ? pageSource.Substring(0, max)
+                : pageSource);
+
+            // Screenshot
+            if (webDriver is ITakesScreenshot takesScreenshot)
+            {
+                var fileName = $"{TestContext.TestName}_{DateTime.Now:HHmmss}.png";
+                var dir = TestContext.TestRunDirectory ?? Directory.GetCurrentDirectory();
+                var path = Path.Combine(dir, fileName);
+
+                var screenshot = takesScreenshot.GetScreenshot();
+                screenshot.SaveAsFile(path);
+
+                Console.WriteLine($"Screenshot salvo em: {path}");
+            }
+
+            Console.WriteLine("=====================================");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[DEBUG] Erro ao coletar evidências: {ex}");
+        }
     }
 
     protected void RegistrarEAutenticarUsuario()
