@@ -37,7 +37,7 @@ public abstract class TestFixture
         }
 
         webDriver = new ChromeDriver(chromeOptions);
-        webDriverWait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(30));
+        webDriverWait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(15));
     }
 
     [AssemblyCleanup]
@@ -123,11 +123,22 @@ public abstract class TestFixture
 
     protected static IWebElement EsperarPorElemento(By localizador)
     {
-        return webDriverWait!.Until(driver =>
+        try
         {
-            var element = driver.FindElement(localizador);
-
-            return element.Displayed ? element : null!;
-        });
+            return webDriverWait!.Until(driver =>
+            {
+                var element = driver.FindElement(localizador);
+                return element.Displayed ? element : null!;
+            });
+        }
+        catch
+        {
+            Console.WriteLine("==== Selenium timeout ====");
+            Console.WriteLine("Current URL: " + webDriver?.Url);
+            Console.WriteLine("Page source:");
+            Console.WriteLine(webDriver?.PageSource);
+            Console.WriteLine("==== end page source ====");
+            throw;
+        }
     }
 }
