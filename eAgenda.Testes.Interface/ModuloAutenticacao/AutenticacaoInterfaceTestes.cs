@@ -18,10 +18,10 @@ public sealed class AutenticacaoInterfaceTestes : TestFixture
             .SendKeys("teste@gmail.com");
 
         EsperarPorElemento(By.CssSelector("input[data-se=inputSenha]"))
-            .SendKeys("Teste@123");
+            .SendKeys("SenhaSuperForteTeste@5912");
 
         EsperarPorElemento(By.CssSelector("input[data-se=inputConfirmarSenha]"))
-            .SendKeys("Teste@123");
+            .SendKeys("SenhaSuperForteTeste@5912");
 
         EsperarPorElemento(By.CssSelector("button[data-se=btnConfirmar]"))
             .Click();
@@ -41,10 +41,10 @@ public sealed class AutenticacaoInterfaceTestes : TestFixture
             .SendKeys("teste@gmail.com");
 
         EsperarPorElemento(By.CssSelector("input[data-se=inputSenha]"))
-            .SendKeys("SenhaSuperForteTeste@536");
+            .SendKeys("SenhaSuperForteTeste@5912");
 
         EsperarPorElemento(By.CssSelector("input[data-se=inputConfirmarSenha]"))
-            .SendKeys("SenhaSuperForteTeste@536");
+            .SendKeys("SenhaSuperForteTeste@5912");
 
         EsperarPorElemento(By.CssSelector("button[data-se=btnConfirmar]"))
             .Click();
@@ -58,7 +58,7 @@ public sealed class AutenticacaoInterfaceTestes : TestFixture
             .SendKeys("teste@gmail.com");
 
         EsperarPorElemento(By.CssSelector("input[data-se=inputSenha]"))
-            .SendKeys("SenhaSuperForteTeste@536");
+            .SendKeys("SenhaSuperForteTeste@5912");
 
         EsperarPorElemento(By.CssSelector("button[data-se=btnConfirmar]"))
             .Click();
