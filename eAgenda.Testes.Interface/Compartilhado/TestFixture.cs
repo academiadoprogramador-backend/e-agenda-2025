@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using System.Globalization;
 
 namespace eAgenda.Testes.Interface.Compartilhado;
 

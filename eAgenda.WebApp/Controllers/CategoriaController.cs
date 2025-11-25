@@ -3,7 +3,6 @@ using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace eAgenda.WebApp.Controllers;
 
