@@ -34,7 +34,8 @@ public abstract class TestFixture
                 "--no-sandbox",            // Necessário para Docker/CI
                 "--disable-dev-shm-usage", // Evita problemas de memória
                 "--disable-gpu",           // Desabilita GPU
-                "--window-size=1920,1080"  // Resolução fixa
+                "--window-size=1920,1080",  // Resolução fixa
+                "--lang=pt-BR"
             );
         }
 
