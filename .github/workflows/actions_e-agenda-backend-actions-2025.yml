@@ -34,10 +34,40 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-
-  deploy:
+  test:
     runs-on: windows-latest
     needs: build
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Code
+      - uses: actions/checkout@v4
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+
+      - name: Verify Chrome installation
+        run: |
+          chrome --version
+          chromedriver --version
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+    
+      - name: Run tests
+        run: dotnet test --configuration Release --verbosity normal
+        env:
+          CI: true
+          ASPNET_ENVIRONMENT: "STAGING"
+          
+  deploy:
+    runs-on: windows-latest
+    needs: [build, test]
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
@@ -62,4 +92,5 @@ jobs:
           app-name: 'e-agenda-backend-actions-2025'
           slot-name: 'Production'
           package: .
+
           
