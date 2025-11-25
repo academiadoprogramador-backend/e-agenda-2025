@@ -47,6 +47,13 @@ public class AutenticacaoController(UserManager<Usuario> userManager, SignInMana
             return View(registroVm);
         }
 
+        await signInManager.PasswordSignInAsync(
+            registroVm.Email,
+            registroVm.Senha,
+            isPersistent: true,
+            lockoutOnFailure: false
+        );
+
         return RedirectToAction(nameof(HomeController.Index), "Home");
     }
 
