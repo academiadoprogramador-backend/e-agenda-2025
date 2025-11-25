@@ -10,18 +10,19 @@ namespace eAgenda.Testes.Interface.Compartilhado;
 [TestClass]
 public abstract class TestFixture
 {
-    protected static SeleniumServerFactory? serverFactory;
+    public TestContext TestContext { get; set; } = null!;
+
+    protected static SeleniumWebApplicationFactory? serverFactory;
     protected static AppDbContext? dbContext;
     protected static WebDriver? webDriver;
     protected static WebDriverWait? webDriverWait;
 
     protected static string enderecoBase = null!;
-    public TestContext TestContext { get; set; } = null!;
 
     [AssemblyInitialize]
     public static void ConfigurarTestFixture(TestContext testContext)
     {
-        serverFactory = new SeleniumServerFactory();
+        serverFactory = new SeleniumWebApplicationFactory();
         dbContext = serverFactory.Servicos.GetRequiredService<AppDbContext>();
         enderecoBase = serverFactory.UrlKestrel;
 
@@ -34,8 +35,8 @@ public abstract class TestFixture
                 "--no-sandbox",            // Necessário para Docker/CI
                 "--disable-dev-shm-usage", // Evita problemas de memória
                 "--disable-gpu",           // Desabilita GPU
-                "--window-size=1920,1080",  // Resolução fixa
-                "--lang=pt-BR"
+                "--window-size=1920,1080", // Resolução fixa
+                "--lang=pt-BR"             // Configura cultura do navegador fixa
             );
         }
 
@@ -95,7 +96,7 @@ public abstract class TestFixture
     }
 
     [TestCleanup]
-    public void RegistrarFalhaGlobal()
+    public void EncerrarTeste()
     {
         if (TestContext.CurrentTestOutcome is not UnitTestOutcome.Failed)
             return;
@@ -106,6 +107,7 @@ public abstract class TestFixture
         try
         {
             Console.WriteLine("========== [DEBUG] ==========");
+
             Console.WriteLine($"Teste: {TestContext.TestName}");
             Console.WriteLine($"Resultado: {TestContext.CurrentTestOutcome}");
             Console.WriteLine($"URL da página atual: {webDriver.Url}");
@@ -113,26 +115,6 @@ public abstract class TestFixture
 
             Console.WriteLine("----- PageSource -----");
             Console.WriteLine(webDriver.PageSource);
-
-            // Screenshot
-            if (webDriver is ITakesScreenshot takesScreenshot)
-            {
-                var root = Directory.GetCurrentDirectory();
-                var screenshotsDir = Path.Combine(root, "artifacts", "screenshots");
-
-                Directory.CreateDirectory(screenshotsDir);
-
-                var fileName =
-                     $"{TestContext.TestName}_{DateTime.Now:yyyyMMdd_HHmmss}.png";
-
-                var path = Path.Combine(screenshotsDir, fileName);
-
-                var screenshot = takesScreenshot.GetScreenshot();
-
-                screenshot.SaveAsFile(path);
-
-                Console.WriteLine($"Screenshot salvo em: {path}");
-            }
 
             Console.WriteLine("========== [FIM DO DEBUG] ==========");
         }
@@ -174,26 +156,10 @@ public abstract class TestFixture
 
     protected static IWebElement EsperarPorElemento(By localizador)
     {
-        //try
-        //{
         return webDriverWait!.Until(driver =>
         {
             var element = driver.FindElement(localizador);
             return element.Displayed ? element : null!;
         });
-        //}
-        //catch (WebDriverTimeoutException)
-        //{
-        //    Console.WriteLine($"[DEBUG] Timeout esperando pelo elemento: {localizador}");
-        //    Console.WriteLine($"[DEBUG] URL atual: {webDriver?.Url}");
-        //    Console.WriteLine("[DEBUG] Título da página: " + webDriver?.Title);
-
-        //    // Opcional: mostra um pedaço do HTML
-        //    var pageSource = webDriver?.PageSource ?? string.Empty;
-        //    Console.WriteLine("[DEBUG] Page source:");
-        //    Console.WriteLine(pageSource);
-
-        //    throw;
-        //}
     }
 }

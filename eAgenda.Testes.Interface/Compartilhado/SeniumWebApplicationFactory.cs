@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace eAgenda.Testes.Interface.Compartilhado;
 
-public class SeleniumServerFactory : WebApplicationFactory<Program>
+public class SeleniumWebApplicationFactory : WebApplicationFactory<Program>
 {
     private IHost? hostKestrel;
 
@@ -26,7 +26,7 @@ public class SeleniumServerFactory : WebApplicationFactory<Program>
         }
     }
 
-    public SeleniumServerFactory()
+    public SeleniumWebApplicationFactory()
     {
         _ = CreateClient(new WebApplicationFactoryClientOptions
         {
