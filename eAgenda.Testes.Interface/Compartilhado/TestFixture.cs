@@ -96,7 +96,7 @@ public abstract class TestFixture
     [TestCleanup]
     public void RegistrarFalhaGlobal()
     {
-        if (TestContext.CurrentTestOutcome != UnitTestOutcome.Failed)
+        if (TestContext.CurrentTestOutcome is not UnitTestOutcome.Failed)
             return;
 
         if (webDriver is null)
@@ -104,34 +104,36 @@ public abstract class TestFixture
 
         try
         {
-            Console.WriteLine("========== DEBUG ==========");
+            Console.WriteLine("========== [DEBUG] ==========");
             Console.WriteLine($"Teste: {TestContext.TestName}");
             Console.WriteLine($"Resultado: {TestContext.CurrentTestOutcome}");
             Console.WriteLine($"URL da página atual: {webDriver.Url}");
             Console.WriteLine($"Título da página atual: {webDriver.Title}");
 
-            var pageSource = webDriver.PageSource ?? string.Empty;
-            var max = 4000;
-
-            Console.WriteLine("----- PageSource (primeiros 4000 chars) -----");
-            Console.WriteLine(pageSource.Length > max
-                ? pageSource.Substring(0, max)
-                : pageSource);
+            Console.WriteLine("----- PageSource -----");
+            Console.WriteLine(webDriver.PageSource);
 
             // Screenshot
             if (webDriver is ITakesScreenshot takesScreenshot)
             {
-                var fileName = $"{TestContext.TestName}_{DateTime.Now:HHmmss}.png";
-                var dir = TestContext.TestRunDirectory ?? Directory.GetCurrentDirectory();
-                var path = Path.Combine(dir, fileName);
+                var root = Directory.GetCurrentDirectory();
+                var screenshotsDir = Path.Combine(root, "artifacts", "screenshots");
+
+                Directory.CreateDirectory(screenshotsDir);
+
+                var fileName =
+                     $"{TestContext.TestName}_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+
+                var path = Path.Combine(screenshotsDir, fileName);
 
                 var screenshot = takesScreenshot.GetScreenshot();
+
                 screenshot.SaveAsFile(path);
 
                 Console.WriteLine($"Screenshot salvo em: {path}");
             }
 
-            Console.WriteLine("=====================================");
+            Console.WriteLine("========== [FIM DO DEBUG] ==========");
         }
         catch (Exception ex)
         {
@@ -171,26 +173,26 @@ public abstract class TestFixture
 
     protected static IWebElement EsperarPorElemento(By localizador)
     {
-        try
+        //try
+        //{
+        return webDriverWait!.Until(driver =>
         {
-            return webDriverWait!.Until(driver =>
-            {
-                var element = driver.FindElement(localizador);
-                return element.Displayed ? element : null!;
-            });
-        }
-        catch (WebDriverTimeoutException)
-        {
-            Console.WriteLine($"[DEBUG] Timeout esperando pelo elemento: {localizador}");
-            Console.WriteLine($"[DEBUG] URL atual: {webDriver?.Url}");
-            Console.WriteLine("[DEBUG] Título da página: " + webDriver?.Title);
+            var element = driver.FindElement(localizador);
+            return element.Displayed ? element : null!;
+        });
+        //}
+        //catch (WebDriverTimeoutException)
+        //{
+        //    Console.WriteLine($"[DEBUG] Timeout esperando pelo elemento: {localizador}");
+        //    Console.WriteLine($"[DEBUG] URL atual: {webDriver?.Url}");
+        //    Console.WriteLine("[DEBUG] Título da página: " + webDriver?.Title);
 
-            // Opcional: mostra um pedaço do HTML
-            var pageSource = webDriver?.PageSource ?? string.Empty;
-            Console.WriteLine("[DEBUG] Page source:");
-            Console.WriteLine(pageSource);
+        //    // Opcional: mostra um pedaço do HTML
+        //    var pageSource = webDriver?.PageSource ?? string.Empty;
+        //    Console.WriteLine("[DEBUG] Page source:");
+        //    Console.WriteLine(pageSource);
 
-            throw;
-        }
+        //    throw;
+        //}
     }
 }

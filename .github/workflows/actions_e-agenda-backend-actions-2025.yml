@@ -58,7 +58,14 @@ jobs:
         run: dotnet test --configuration Release --verbosity normal
         env:
           CI: true
-          ASPNET_ENVIRONMENT: "STAGING"
+          ASPNET_ENVIRONMENT: "Testing"
+
+      - name: Upload Selenium screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-screenshots
+          path: artifacts/screenshots
           
   deploy:
     runs-on: windows-latest
