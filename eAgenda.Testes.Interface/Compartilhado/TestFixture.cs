@@ -24,7 +24,26 @@ public abstract class TestFixture
 
         enderecoBase = serverFactory.UrlKestrel;
 
-        webDriver = new ChromeDriver();
+        ChromeOptions chromeOptions = new ChromeOptions();
+
+        // Se estiver no GitHub Actions (CI não está vazia)
+        if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CI")))
+        {
+            chromeOptions.AddArguments(
+                "--headless",              // Sem interface gráfica
+                "--no-sandbox",            // Necessário para Docker/CI
+                "--disable-dev-shm-usage", // Evita problemas de memória
+                "--disable-gpu",           // Desabilita GPU
+                "--window-size=1920,1080", // Resolução fixa
+                "--lang=pt-BR"             // Configura cultura do navegador fixa
+            );
+        }
+        else
+        {
+            chromeOptions.AddArgument("--start-fullscreen");
+        }
+
+        webDriver = new ChromeDriver(chromeOptions);
     }
 
     [AssemblyCleanup]
