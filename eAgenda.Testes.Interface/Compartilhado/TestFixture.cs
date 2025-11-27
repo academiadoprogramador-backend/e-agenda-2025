@@ -9,6 +9,8 @@ namespace eAgenda.Testes.Interface.Compartilhado;
 [TestClass]
 public abstract class TestFixture
 {
+    public TestContext TestContext { get; set; } = null!;
+
     protected static SeleniumWebApplicationFactory serverFactory;
     protected static WebDriver? webDriver;
     protected static WebDriverWait? webDriverWait;
@@ -95,6 +97,35 @@ public abstract class TestFixture
         webDriver.Manage().Cookies.DeleteAllCookies();
 
         webDriverWait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(5));
+    }
+
+    [TestCleanup]
+    public void EncerrarTeste()
+    {
+        if (TestContext.CurrentTestOutcome is not UnitTestOutcome.Failed)
+            return;
+
+        if (webDriver is null)
+            return;
+
+        try
+        {
+            Console.WriteLine("========== [DEBUG] ==========");
+
+            Console.WriteLine($"Teste: {TestContext.TestName}");
+            Console.WriteLine($"Resultado: {TestContext.CurrentTestOutcome}");
+            Console.WriteLine($"Url da página atual: {webDriver.Url}");
+            Console.WriteLine($"Título da página atual: {webDriver.Title}");
+
+            Console.WriteLine("---- PageSource ----");
+            Console.WriteLine(webDriver.PageSource);
+
+            Console.WriteLine("========== [FIM DO DEBUG] ==========");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[DEBUG] Erro ao coletar evidências: {ex}");
+        }
     }
 
     protected void RegistrarEAutenticarUsuario()
