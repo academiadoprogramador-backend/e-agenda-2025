@@ -10,15 +10,15 @@ on: # Gatilho do fluxo de trabalho
   workflow_dispatch:
 
 jobs:
-  build: # Compila o projeto e o publica em uma pasta raÌz
+  build: # Compila o projeto e o publica em uma pasta ra√≠z
     runs-on: windows-latest
     permissions:
       contents: read #This is required for actions/checkout
 
     steps:
-      - uses: actions/checkout@v4 # Puxa os arquivos do repositÛrio
+      - uses: actions/checkout@v4 # Puxa os arquivos do reposit√≥rio
 
-      - name: Set up .NET Core # Instala o .NET 8 na m·quina executando o worflow
+      - name: Set up .NET Core # Instala o .NET 8 na m√°quina executando o worflow
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
@@ -42,7 +42,13 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+
+      - name: "Set up Chrome"
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
      
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
@@ -52,7 +58,8 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release --verbosity normal
         env:
-          ASPNET_ENVIRONMENT: "STAGING"
+          CI: true
+          ASPNET_ENVIRONMENT: "Testing"
       
   migrate:
     runs-on: windows-latest
@@ -70,7 +77,7 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Install EF Core CLI
-        run: dotnet tool install --global dotnet-ef
+        run: dotnet tool install --global dotnet-ef --version 8.*
 
       - name: Apply EF Core migrations
         run: dotnet ef database update --project ./eAgenda.Infraestrutura.Orm --startup-project ./eAgenda.WebApp
@@ -104,4 +111,5 @@ jobs:
           app-name: 'e-agenda-backend-2025-tiago'
           slot-name: 'Production'
           package: .
+
           
